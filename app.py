@@ -6,6 +6,7 @@ import webbrowser
 from pathlib import Path
 import pickle
 import streamlit_authenticator as stauth
+from collections import defaultdict
 
 # Set page configuration
 st.set_page_config(page_title="Customer Reviews")
@@ -58,10 +59,38 @@ if authentication:
     st.header("Customer Information")
     df = pd.read_excel(excel_file,
                        sheet_name=sheet,
-                       usecols='A:C',
+                       usecols='A:D',
                        header=0,)
     authenticator.logout("Logout", "sidebar")
     st.sidebar.title(f"Welcome {name}")
+    
+    
+    
+    dishbook_op = op.load_workbook('Reviews_Ans.xlsx')
+    dish_op = dishbook_op.active
+    
+    #New Code for Dishes
+    foods = defaultdict(int)
+    i = 1
+    while True:
+        good = dish_op.cell(row=i, column=4).value
+        if good == "NULL" or good == "FoodItem":
+            i += 1 
+            continue
+        if good == None:
+            break
+        foods[good] += 1
+        i += 1
+    dishbook_op.save('Reviews_Ans.xlsx')
+
+    fd = pd.DataFrame.from_dict(foods, orient='index', columns=['Customers'])
+    fd.reset_index(inplace=True)
+    fd.rename(columns={'index': 'Dish'}, inplace=True)
+
+    # Create the bar graph using Plotly Express
+    gih = px.bar(fd, x='Dish', y='Customers', title='Number of Customers per Dish')
+
+    
     # Take the opinion excel file and generates a pie chart
     st.subheader("Information on the reviews informations")
     opinion = pd.read_excel(excel_file2,
@@ -88,7 +117,13 @@ if authentication:
 
     st.dataframe(df)
     st.dataframe(opinion)
+
     st.plotly_chart(pie)
+
+    st.subheader("Customers who bought what food")
+    st.write(foods)
+    st.plotly_chart(gih)
+
 
     # Visualize the histogram
 

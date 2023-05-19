@@ -4,7 +4,7 @@ import openpyxl as op
 import datetime
 
 current_date = datetime.datetime.now()
-food = ("biryani", "pizza", "waffle", "pasta", "fries")
+food = ("Biryani", "Pizza", "Waffle", "Pasta", "Fries", 'Lassi', 'Paneer', 'Dosa', 'Rogan Josh', 'Roshagulla' ,'Steak', 'Burger', 'Salad', 'Quiche', 'Creme')
 
 BOT_TOKEN = '6127391390:AAF2yZ1L828iUyROP6wyhZaTz2Odfq77ggU'
 
@@ -35,7 +35,8 @@ def echo_all(message):
     flag = False
     fd_items = ""
     for i in fdbk.split():
-        if i.lower() in food:
+        if (i.lower() in food) or (i in food):
+            print(i)
             fd_items = i.lower()
             flag = True
     # set up for creating excel file
@@ -51,7 +52,7 @@ def echo_all(message):
     else:
         row = [fid, fdbk, score, "NULL",
                datetime.datetime.fromtimestamp(d_time)]
-    row = [fid, fdbk, score]
+    #row = [fid, fdbk, score]
     sheet.append(row)
     workbook.save('Reviews_Ans.xlsx')
 
