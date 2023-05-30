@@ -7,6 +7,7 @@ from pathlib import Path
 import pickle
 import streamlit_authenticator as stauth
 from collections import defaultdict
+from PIL import Image
 
 # Set page configuration
 st.set_page_config(page_title="Customer Reviews")
@@ -49,11 +50,18 @@ if authentication:
         """, unsafe_allow_html=True)
 
     st.header("Analyzed Customer Reviews")
-    st.subheader("Ratings from the customer")
+    head_image = Image.open('headimage.jpg')
+    # # Reduce image size
+    # desired_size = (800, 600)  # Specify your desired size
+    # resized_image = head_image.resize(desired_size)
+    st.image(head_image, caption='Our Restaurant', use_column_width=True)
+    
+
 
     excel_file = 'Reviews_Ans.xlsx'
     excel_file2 = 'opinion.xlsx'
     sheet = 'Sheet1'
+
 
     # Takes the following total columns and presents them
     st.header("Customer Information")
@@ -63,8 +71,6 @@ if authentication:
                        header=0,)
     authenticator.logout("Logout", "sidebar")
     st.sidebar.title(f"Welcome {name}")
-    
-    
     
     dishbook_op = op.load_workbook('Reviews_Ans.xlsx')
     dish_op = dishbook_op.active
@@ -92,7 +98,6 @@ if authentication:
 
     
     # Take the opinion excel file and generates a pie chart
-    st.subheader("Information on the reviews informations")
     opinion = pd.read_excel(excel_file2,
                             sheet_name=sheet,
                             usecols='A:C',

@@ -4,7 +4,7 @@ import openpyxl as op
 import datetime
 
 current_date = datetime.datetime.now()
-food = ("Biryani", "Pizza", "Waffle", "Pasta", "Fries", 'Lassi', 'Paneer', 'Dosa', 'Rogan Josh', 'Roshagulla' ,'Steak', 'Burger', 'Salad', 'Quiche', 'Creme')
+food = ("biryani", "pizza", "waffle", "pasta", "fries", 'lassi', 'paneer', 'dosa', 'rogan josh', 'roshagulla' ,'steak', 'burger', 'salad', 'quiche', 'creme')
 
 BOT_TOKEN = '6127391390:AAF2yZ1L828iUyROP6wyhZaTz2Odfq77ggU'
 
@@ -35,7 +35,7 @@ def echo_all(message):
     flag = False
     fd_items = ""
     for i in fdbk.split():
-        if (i.lower() in food) or (i in food):
+        if i.lower() in food:
             print(i)
             fd_items = i.lower()
             flag = True
